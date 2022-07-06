@@ -31,6 +31,10 @@
         </tbody>
     </table>
     <p><a th:href="@{/admin/create}">Add new user</a></p>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+    <p><a th:href="@{/user}">your User Page</a></p>
 </div>
 </body>
 </html>

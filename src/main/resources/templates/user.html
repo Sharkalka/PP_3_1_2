@@ -6,16 +6,26 @@
 <body>
 <div th:align="center">
     <h1>UserPage</h1>
+    <table th:border="2" th:cellpadding="15">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>LAST NAME</th>
+            <th>IS CLIENT</th>
+        </tr>
+        </thead>
+        <tbody>
+            <td th:text="${user.getId}"></td>
+            <td th:text="${user.getName}"></td>
+            <td th:text="${user.getLastName}"></td>
+            <td th:text="${user.isClient}"></td>
+        </tbody>
+    </table>
+    <br>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
 </div>
-
-<td th:text="${user.getId}"></td>
-<td th:text="${user.getName}"></td>
-<td th:text="${user.getLastName}"></td>
-<td th:text="${user.isClient}"></td>
-
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
-
 </body>
 </html>

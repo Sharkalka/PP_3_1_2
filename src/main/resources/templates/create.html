@@ -10,6 +10,14 @@
         <form method="post" th:action="@{/admin/createUser}" th:object="${user}">
             <table th:border="2" th:cellpadding="15">
                 <tr>
+                    <td>Login:</td>
+                    <td><input type="text" th:field="${user.username}"/></td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><input type="text" th:field="${user.password}"/></td>
+                </tr>
+                <tr>
                     <td>First Name:</td>
                     <td><input type="text" th:field="${user.name}"/></td>
                 </tr>
@@ -22,8 +30,12 @@
                     <td><input type="checkbox" th:field="${user.client}"/></td>
                 </tr>
                 <tr>
-                    <td>Is Admin?</td>
-                    <td><input type="checkbox" name="isAdmin"></td>
+                    <td>Roles:</td>
+                    <td> <input type="checkbox" name="inputRoles"
+                                th:each="role: ${roles}"
+                                th:text="${role.getName()}"
+                                th:value="${role.getId()}"
+                    /></td>
                 </tr>
                 <tr>
                     <td colspan="2"><input type="submit" value="Save"></td>
