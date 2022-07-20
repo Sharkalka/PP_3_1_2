@@ -39,4 +39,16 @@ public class RoleService {
     public void deleteRole(long id) {
         roleDao.deleteById(id);
     }
+
+    public Set<Role> getSetOfChosenRoles(Long[] inputRoles) {
+        Set<Role> roles = new HashSet<>();
+        if (inputRoles == null) {
+            roles.add(getRoleByName("ROLE_USER"));
+        } else {
+            for(Long i: inputRoles) {
+                roles.add(getRoleById(i));
+            }
+        }
+        return roles;
+    }
 }

@@ -7,7 +7,7 @@
 <body>
     <div th:align="center">
         <h2>Edit User</h2>
-        <form th:action="@{/admin/userUpdate}" th:object="${user}" method="post">
+        <form th:action="@{/admin/userUpdate/{id}(id=${user.id})}" th:object="${user}" th:method="put">
             <table th:border="2" th:cellpadding="15">
                 <tr>
                     <td>ID:</td>

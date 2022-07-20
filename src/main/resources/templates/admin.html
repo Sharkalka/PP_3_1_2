@@ -26,7 +26,9 @@
             <td th:text="${user.isClient}"></td>
             <td th:text="${user.getRoles}"></td>
             <td><a th:href="@{/admin/update/{id}(id=${user.id})}">Edit</a></td>
-            <td><a th:href="@{/admin/delete/{id}(id=${user.id})}">Delete</a></td>
+            <td><form th:action="@{/admin/{id}(id=${user.id})}" th:method="delete">
+                <input type="submit" value="Delete"/>
+            </form></td>
         </tr>
         </tbody>
     </table>

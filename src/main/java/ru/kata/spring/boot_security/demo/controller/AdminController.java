@@ -14,78 +14,57 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Controller
-public class MainController {
+@RequestMapping("/admin")
+public class AdminController {
 
     private final UserService userService;
     private final RoleService roleService;
 
-    public MainController(UserService userService, RoleService roleService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
 
-    @GetMapping("/admin")
+    @GetMapping
     public String allUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         return "admin";
     }
 
-    @GetMapping("/admin/create")
+    @GetMapping("/create")
     public String createUserForm(@ModelAttribute User user, Model model) {
         model.addAttribute("roles", roleService.getAllRoles());
         return "create";
     }
 
-    @PostMapping("/admin/createUser")
+    @PostMapping("/createUser")
     public String createUser(@ModelAttribute User user,
                              @RequestParam(value = "inputRoles",required = false) Long[] inputRoles) {
-        Set<Role> roles = new HashSet<>();
-        if (inputRoles == null) {
-            roles.add(roleService.getRoleByName("ROLE_USER"));
-        } else {
-            for(Long i: inputRoles) {
-                roles.add(roleService.getRoleById(i));
-            }
-        }
-        user.setRoles(roles);
+        user.setRoles(roleService.getSetOfChosenRoles(inputRoles));
         userService.createUser(user);
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/update/{id}")
+    @GetMapping("/update/{id}")
     public String editUser(@PathVariable Long id, Model model) {
         model.addAttribute("user", userService.getUser(id));
         model.addAttribute("roles", roleService.getAllRoles());
         return "update";
     }
 
-    @PostMapping("/admin/userUpdate")
+    @PutMapping("/userUpdate/{id}")
     public String updateUser(@ModelAttribute("user") User user,
+                             @PathVariable Long id,
                              @RequestParam(value = "inputRoles", required = false) Long[] inputRoles) {
-
-        Set<Role> roles = new HashSet<>();
-
-        if (inputRoles == null) {
-            roles.add(roleService.getRoleByName("ROLE_USER"));
-        } else {
-            for(Long i: inputRoles) {
-                roles.add(roleService.getRoleById(i));
-            }
-        }
-        user.setRoles(roles);
-        userService.updateUser(user);
+        User editUser = userService.getUser(id);
+        editUser.setRoles(roleService.getSetOfChosenRoles(inputRoles));
+        userService.updateUser(editUser);
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/delete/{id}")
+    @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return "redirect:/admin";
-    }
-
-    @GetMapping("/user")
-    public String userPage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        model.addAttribute("user", userService.findByUserName(userDetails.getUsername()));
-        return "user";
     }
 }
